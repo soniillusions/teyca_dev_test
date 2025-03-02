@@ -51,7 +51,7 @@ curl -X POST http://localhost:4567/operation \
 ```
 3. Пример запроса для **POST /submit**
 ```sh
-curl -X POST http://localhost:4567/confirm \
+curl -X POST http://localhost:4567/submit \
      -H "Content-Type: application/json" \
      -d '{
        "user": { "id": 1 },
