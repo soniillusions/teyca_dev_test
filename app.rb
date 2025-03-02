@@ -8,7 +8,7 @@ set :database, { adapter: 'sqlite3', database: 'db/test.db' }
 
 require_all 'models'
 
-post '/calculate' do
+post '/operation' do
 	data = JSON.parse(request.body.read)
 	user = User[data['user_id']]
 
@@ -95,7 +95,7 @@ post '/calculate' do
 	}.to_json
 end
 
-post '/confirm' do
+post '/submit' do
 	data = JSON.parse(request.body.read)
 	user = User[data['user']['id']]
 	operation = Operation[data['operation_id']]
