@@ -94,3 +94,43 @@ post '/calculate' do
 		positions: positions_arr
 	}.to_json
 end
+
+post '/confirm' do
+	data = JSON.parse(request.body.read)
+	user = User[data['user']['id']]
+	operation = Operation[data['operation_id']]
+
+	return { status: 'error', message: 'Пользователь или операция не найдены' }.to_json if user.nil? || operation.nil?
+	return { status: 'error', message: 'Операция уже выполнена' }.to_json if operation.done
+
+    write_off = data['write_off'].to_f
+
+    if write_off > operation.allowed_write_off
+      return { status: 'error', message: 'Нельзя списать столько бонусов' }.to_json
+    end
+
+    new_final_price = (operation.check_summ - write_off).to_f.round(2)
+    new_cashback = (new_final_price * (operation.cashback_percent / 100.0)).to_f.round(2)
+
+	operation.update(
+		check_summ: new_final_price,
+		write_off: write_off,
+		done: true
+	)
+
+	user.update(bonus: user.bonus - write_off + new_cashback)
+
+	{
+		status: 'confirmed',
+		message: 'Операция успешно подтверждена',
+		operation_info: {
+			user_id: user.id,
+			cashback_bonus: new_cashback,
+			cashback_percent: operation.cashback_percent.to_f.round(2),
+			total_discount: operation.discount.to_f.round(2),
+			discount_percent: operation.discount_percent.to_f.round(2),
+			write_off: write_off,
+			final_sum_to_pay: new_final_price
+		}
+	}.to_json
+end
