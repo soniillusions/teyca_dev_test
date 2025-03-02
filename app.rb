@@ -76,7 +76,7 @@ post '/operation' do
 		allowed_write_off: allowed_write_off
 	)
 
-	{
+	response = {
 		status: 'success',
 		user: { id: user.id, name: user.name },
 		operation_id: operation.id,
@@ -92,7 +92,9 @@ post '/operation' do
 			discount_percent: discount_percent,
 		},
 		positions: positions_arr
-	}.to_json
+	}
+
+	JSON.pretty_generate(response)
 end
 
 post '/submit' do
@@ -120,7 +122,7 @@ post '/submit' do
 
 	user.update(bonus: user.bonus - write_off + new_cashback)
 
-	{
+	response = {
 		status: 'confirmed',
 		message: 'Операция успешно подтверждена',
 		operation_info: {
@@ -132,5 +134,7 @@ post '/submit' do
 			write_off: write_off,
 			final_sum_to_pay: new_final_price
 		}
-	}.to_json
+	}
+
+	JSON.pretty_generate(response)
 end
