@@ -1,0 +1,20 @@
+current directory: /home/aleks/Desktop/Projects/test/test/vendor/bundle/ruby/3.2.0/gems/debug-1.10.0/ext/debug
+/home/aleks/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+/home/aleks/.rbenv/versions/3.2.2/bin/ruby: warning: Ruby was built without YJIT support. You may need to install rustc to build Ruby with YJIT.
+creating Makefile
+
+current directory: /home/aleks/Desktop/Projects/test/test/vendor/bundle/ruby/3.2.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250228-69903-abh5w1 sitelibdir\=./.gem.20250228-69903-abh5w1 clean
+
+current directory: /home/aleks/Desktop/Projects/test/test/vendor/bundle/ruby/3.2.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250228-69903-abh5w1 sitelibdir\=./.gem.20250228-69903-abh5w1
+compiling debug.c
+compiling iseq_collector.c
+linking shared-object debug/debug.so
+
+current directory: /home/aleks/Desktop/Projects/test/test/vendor/bundle/ruby/3.2.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250228-69903-abh5w1 sitelibdir\=./.gem.20250228-69903-abh5w1 install
+/usr/bin/install -c -m 0755 debug.so ./.gem.20250228-69903-abh5w1/debug
+
+current directory: /home/aleks/Desktop/Projects/test/test/vendor/bundle/ruby/3.2.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250228-69903-abh5w1 sitelibdir\=./.gem.20250228-69903-abh5w1 clean
