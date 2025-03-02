@@ -37,7 +37,7 @@ bundle exec ruby app.rb
 curl -X POST http://localhost:4567/operation \
    -H "Content-Type: application/json" \
    -d '{
-     "user_id": 1,
+     "user_id": 2,
      "positions": [
        {"id": 1, "price": 100, "quantity": 2},
        {"id": 2, "price": 50, "quantity": 1},
@@ -47,19 +47,65 @@ curl -X POST http://localhost:4567/operation \
 ```
 Пример ответа:
 ```sh
-{"status":"success","user":{"id":1,"name":"Иван"},"operation_id":18,"sum":772.5,"bonus_information":{"bonus_balance":9304.031,"allowed_write_off":772.5,"cashback_percent":5.56,"will_be_charged":50.0},"discount_information":{"discount":127.5,"discount_percent":14.17},"positions":[{"type":"increased_cashback","amount":1,"description":"Молоко","product_discount_percent":0,"product_discount_value":0.0},{"type":"discount","amount":5,"description":"Хлеб","product_discount_percent":15,"product_discount_value":127.5}]}%   
+{
+  "status": "success",
+  "user": {
+    "id": 2,
+    "name": "Марина"
+  },
+  "operation_id": 28,
+  "sum": 727.5,
+  "bonus_information": {
+    "bonus_balance": 9301.53,
+    "allowed_write_off": 727.5,
+    "cashback_percent": 5.56,
+    "will_be_charged": 50.0
+  },
+  "discount_information": {
+    "discount": 172.5,
+    "discount_percent": 19.17
+  },
+  "positions": [
+    {
+      "type": "increased_cashback",
+      "amount": 1,
+      "description": "Молоко",
+      "product_discount_percent": 5,
+      "product_discount_value": 2.5
+    },
+    {
+      "type": "discount",
+      "amount": 5,
+      "description": "Хлеб",
+      "product_discount_percent": 20,
+      "product_discount_value": 172.5
+    }
+  ]
+}%  
 ```
 3. Пример запроса для **POST /submit**
 ```sh
 curl -X POST http://localhost:4567/submit \
      -H "Content-Type: application/json" \
      -d '{
-       "user": { "id": 1 },
-       "operation_id": 18,
+       "user": { "id": 2 },
+       "operation_id": 28,
        "write_off": 700
      }'
 ```
 Пример ответа:
 ```sh
-{"status":"confirmed","message":"Операция успешно подтверждена","operation_info":{"user_id":1,"cashback_bonus":4.03,"cashback_percent":5.56,"total_discount":127.5,"discount_percent":14.17,"write_off":700.0,"final_sum_to_pay":72.5}}%     
+{
+  "status": "confirmed",
+  "message": "Операция успешно подтверждена",
+  "operation_info": {
+    "user_id": 2,
+    "cashback_bonus": 1.53,
+    "cashback_percent": 5.56,
+    "total_discount": 172.5,
+    "discount_percent": 19.17,
+    "write_off": 700.0,
+    "final_sum_to_pay": 27.5
+  }
+}%   
 ```
