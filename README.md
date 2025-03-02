@@ -7,7 +7,7 @@
 ### Способ 1: Postman
 1. Запустить приложение:
 ```sh
-bundle exec ruby app
+bundle exec ruby app.rb
 ```
 2. Открыть [Postman](https://www.postman.com/downloads/).  
 3. Нажать **Import** → выбрать файл `test_requests.postman_collection.json`.
@@ -30,7 +30,7 @@ http://localhost:4567/submit
 Запросы можно отправлять с помощью `curl` прямо из терминала. 
 1. Запустить приложение:
 ```sh
-bundle exec ruby app
+bundle exec ruby app.rb
 ```
 2. Пример запроса для **POST /operation**
 ```sh
