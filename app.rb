@@ -12,7 +12,7 @@ post '/operation' do
 	data = JSON.parse(request.body.read)
 	user = User[data['user_id']]
 
-	return status 404 if user.nil?
+	return { status: 'error', message: 'Пользователь не найден' }.to_json if user.nil?
 
 	positions = data['positions']
 	template = Template[user.template_id]
