@@ -23,11 +23,15 @@ post '/operation' do
 	noloyalty_total = 0
 	positions_arr = []
 
+	product_ids = positions.map { |position| position['id'] }
+
+	products = Product.where(id: product_ids).to_hash(:id)
+
 	positions.each do |position|
 		price = position['price'].to_f * position['quantity']
 		total_price += price
 
-		product = Product[position['id']]
+		product = products[position['id']]
 
 		if product.nil?
 			noloyalty_total += price
