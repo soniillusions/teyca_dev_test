@@ -24,40 +24,56 @@ post '/operation' do
 	positions_arr = []
 
 	positions.each do |position|
-		product = Product[position['id']]
-
-		next unless product
-
 		price = position['price'].to_f * position['quantity']
 		total_price += price
 
-		case product.type
-		when 'noloyalty'
+		product = Product[position['id']]
+
+		if product.nil?
 			noloyalty_total += price
-			next
-		when 'increased_cashback'
-			product_cashback = product.value.to_i
-			total_cashback += price * ((template.cashback + product_cashback) / 100.0)
 			total_discount += price * (template.discount / 100.0)
-		when 'discount'
-			product_discount = product.value.to_i
-			total_discount += price * ((template.discount + product_discount) / 100.0)
 			total_cashback += price * (template.cashback / 100.0)
+			product_discount_percent = template.discount
+
+			positions_arr << {
+				type: 'default',
+				amount: position['quantity'],
+				description: 'default',
+				product_discount_percent: product_discount_percent,
+				product_discount_value: total_discount
+			}
 		else
-			total_discount += price * (template.discount / 100.0)
-			total_cashback += price * (template.cashback / 100.0)
+			case product.type
+			when 'noloyalty'
+				noloyalty_total += price
+			when 'increased_cashback'
+				product_cashback = product.value.to_i
+				total_cashback += price * ((template.cashback + product_cashback) / 100.0)
+				total_discount += price * (template.discount / 100.0)
+			when 'discount'
+				product_discount = product.value.to_i
+				total_discount += price * ((template.discount + product_discount) / 100.0)
+				total_cashback += price * (template.cashback / 100.0)
+			else
+				total_discount += price * (template.discount / 100.0)
+				total_cashback += price * (template.cashback / 100.0)
+			end
+
+			if product.type == 'noloyalty'
+				product_discount_percent = 0
+			else
+				product_discount = product.type == 'discount' ? product.value.to_i : 0
+				product_discount_percent = template.discount + product_discount
+			end
+
+			positions_arr << {
+				type: product.type,
+				amount: position['quantity'],
+				description: product.name,
+				product_discount_percent: product_discount_percent,
+				product_discount_value: total_discount
+			}
 		end
-
-		product_discount = product.type == 'discount' ? product.value.to_i : 0
-		product_discount_percent = template.discount + product_discount
-
-		positions_arr << {
-			type: product.type,
-			amount: position['quantity'],
-			description: product.name,
-			product_discount_percent: product_discount_percent,
-			product_discount_value: total_discount
-		}
 	end
 
 	final_price = total_price - total_discount
